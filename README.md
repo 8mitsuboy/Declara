@@ -1,17 +1,66 @@
-# declara
+# Declara
 
-A new Flutter project.
+宣言するだけで、AIがタスクを生成してくれるタスク管理アプリ。
+
+## エレベータピッチ
+
+先延ばしには悪循環がある。何をすればいいかわからない → 考えるのが面倒でやりたくなくなる → でもやらなきゃいけないから落ち込む → さらに動けなくなる。この悪循環の起点は「中身がブラックボックスであること」にある。
+
+Declaraは**宣言するだけでタスクを自動生成するAIタスク管理アプリ**です。先延ばし癖のある人が「何から手をつければいいかわからない」という状態から抜け出せるよう、ブラックボックスを開封します。「引っ越したい」と入力するだけで、AIが具体的な行動を洗い出し、最初の一歩を踏み出せるようにします。
+
+## コンセプト
+
+Declaraは**宣言的プログラミング**の思想をタスク管理に適用したアプリです。
+
+- **ユーザーはWhatだけ宣言する。HowはAIが解決する。**
+- 「引っ越したい」と入力するだけで、住所変更・賃貸情報収集・荷造りなどのタスクが自動生成される。
+
+先延ばしの悪循環（「何をすれば？」→ 考えるのが面倒 → 落ち込む → 動けない）を、ブラックボックスを開封することで断ち切ります。
+
+## 主な機能（MVP）
+
+- **宣言入力**: 「〜したい」「〜しなきゃ」を自由記述で入力
+- **AIタスク生成**: Claude APIが3〜7個の具体的なタスクを生成
+- **進捗管理**: タスクの完了/未完了切り替え・進捗表示
+- **永続化**: タスク状態はローカルDBに保存され、アプリ再起動後も保持
+- **完了アニメーション**: タスク完了時の視覚的フィードバック
+
+## ドメインモデル
+
+```
+Declaration（宣言）
+├── id: String
+├── title: String        // 「〜したい」
+├── done: bool
+└── tasks: List<Task>
+
+Task（タスク）
+├── id: String
+├── declarationId: String
+├── title: String        // 具体的な行動
+├── done: bool
+└── sortOrder: int
+```
+
+## アーキテクチャ
+
+```
+lib/
+├── domain/        # ドメインモデル（外部依存なし）
+├── repository/    # リポジトリインターフェース
+├── data/          # リポジトリ実装、DB定義、外部サービス
+├── pages/         # UI（ページ単位でフォルダ分け）
+└── providers.dart # DIコンテナ（Riverpod）
+```
+
+- **状態管理**: Riverpod
+- **ローカルDB**: Drift (SQLite)
+- **バックエンド**: Supabase
+- **AI生成**: Claude API
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter pub get
+flutter run
+```
