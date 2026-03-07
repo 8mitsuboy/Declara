@@ -14,7 +14,7 @@ class DeclaraTextField extends HookConsumerWidget {
       controller: controller,
       decoration: InputDecoration(
         labelText: "やりたいこと",
-        hintText: "例: 引っ越し業者を比較する",
+        hintText: "例: 引っ越したい",
         prefixIcon: const Icon(Icons.edit_note),
         suffixIcon: IconButton(
           onPressed: controller.clear,
