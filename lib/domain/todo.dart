@@ -11,4 +11,12 @@ class Todo {
   factory Todo({required String title}) {
     return Todo._(id: const Uuid().v4(), label: TodoLabel(title));
   }
+
+  factory Todo.rehydrate({
+    required String id,
+    required String label,
+    required bool done,
+  }) {
+    return Todo._(id: id, label: TodoLabel(label), done: done);
+  }
 }
