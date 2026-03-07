@@ -1,4 +1,4 @@
-import 'package:declara/data/local/drift_database.dart' hide Todo;
+import 'package:declara/data/local/drift_database.dart';
 import 'package:declara/domain/todo.dart';
 import 'package:declara/repository/todo_repository.dart';
 import 'package:drift/drift.dart';
