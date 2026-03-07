@@ -3,7 +3,7 @@
 part of 'drift_database.dart';
 
 // ignore_for_file: type=lint
-class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
+class $TodosTable extends Todos with TableInfo<$TodosTable, TodoRecord> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -52,7 +52,7 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
   static const String $name = 'todos';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Todo> instance, {
+    Insertable<TodoRecord> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -82,9 +82,9 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Todo map(Map<String, dynamic> data, {String? tablePrefix}) {
+  TodoRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Todo(
+    return TodoRecord(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -106,11 +106,11 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, Todo> {
   }
 }
 
-class Todo extends DataClass implements Insertable<Todo> {
+class TodoRecord extends DataClass implements Insertable<TodoRecord> {
   final String id;
   final String label;
   final bool done;
-  const Todo({required this.id, required this.label, required this.done});
+  const TodoRecord({required this.id, required this.label, required this.done});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -128,12 +128,12 @@ class Todo extends DataClass implements Insertable<Todo> {
     );
   }
 
-  factory Todo.fromJson(
+  factory TodoRecord.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Todo(
+    return TodoRecord(
       id: serializer.fromJson<String>(json['id']),
       label: serializer.fromJson<String>(json['label']),
       done: serializer.fromJson<bool>(json['done']),
@@ -149,13 +149,13 @@ class Todo extends DataClass implements Insertable<Todo> {
     };
   }
 
-  Todo copyWith({String? id, String? label, bool? done}) => Todo(
+  TodoRecord copyWith({String? id, String? label, bool? done}) => TodoRecord(
     id: id ?? this.id,
     label: label ?? this.label,
     done: done ?? this.done,
   );
-  Todo copyWithCompanion(TodosCompanion data) {
-    return Todo(
+  TodoRecord copyWithCompanion(TodosCompanion data) {
+    return TodoRecord(
       id: data.id.present ? data.id.value : this.id,
       label: data.label.present ? data.label.value : this.label,
       done: data.done.present ? data.done.value : this.done,
@@ -164,7 +164,7 @@ class Todo extends DataClass implements Insertable<Todo> {
 
   @override
   String toString() {
-    return (StringBuffer('Todo(')
+    return (StringBuffer('TodoRecord(')
           ..write('id: $id, ')
           ..write('label: $label, ')
           ..write('done: $done')
@@ -177,13 +177,13 @@ class Todo extends DataClass implements Insertable<Todo> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Todo &&
+      (other is TodoRecord &&
           other.id == this.id &&
           other.label == this.label &&
           other.done == this.done);
 }
 
-class TodosCompanion extends UpdateCompanion<Todo> {
+class TodosCompanion extends UpdateCompanion<TodoRecord> {
   final Value<String> id;
   final Value<String> label;
   final Value<bool> done;
@@ -201,7 +201,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        label = Value(label);
-  static Insertable<Todo> custom({
+  static Insertable<TodoRecord> custom({
     Expression<String>? id,
     Expression<String>? label,
     Expression<bool>? done,
@@ -358,14 +358,14 @@ class $$TodosTableTableManager
         RootTableManager<
           _$AppDatabase,
           $TodosTable,
-          Todo,
+          TodoRecord,
           $$TodosTableFilterComposer,
           $$TodosTableOrderingComposer,
           $$TodosTableAnnotationComposer,
           $$TodosTableCreateCompanionBuilder,
           $$TodosTableUpdateCompanionBuilder,
-          (Todo, BaseReferences<_$AppDatabase, $TodosTable, Todo>),
-          Todo,
+          (TodoRecord, BaseReferences<_$AppDatabase, $TodosTable, TodoRecord>),
+          TodoRecord,
           PrefetchHooks Function()
         > {
   $$TodosTableTableManager(_$AppDatabase db, $TodosTable table)
@@ -415,14 +415,14 @@ typedef $$TodosTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $TodosTable,
-      Todo,
+      TodoRecord,
       $$TodosTableFilterComposer,
       $$TodosTableOrderingComposer,
       $$TodosTableAnnotationComposer,
       $$TodosTableCreateCompanionBuilder,
       $$TodosTableUpdateCompanionBuilder,
-      (Todo, BaseReferences<_$AppDatabase, $TodosTable, Todo>),
-      Todo,
+      (TodoRecord, BaseReferences<_$AppDatabase, $TodosTable, TodoRecord>),
+      TodoRecord,
       PrefetchHooks Function()
     >;
 

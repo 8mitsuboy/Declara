@@ -3,6 +3,7 @@ import 'package:drift_flutter/drift_flutter.dart';
 
 part 'drift_database.g.dart';
 
+@DataClassName('TodoRecord')
 class Todos extends Table {
   TextColumn get id => text()();
 
