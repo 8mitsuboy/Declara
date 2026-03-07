@@ -1,8 +1,10 @@
 import 'package:declara/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load();
   runApp(ProviderScope(child: MyApp()));
 }
 
