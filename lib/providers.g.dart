@@ -331,3 +331,78 @@ final class SubTaskListFamily extends $Family
   @override
   String toString() => r'subTaskListProvider';
 }
+
+@ProviderFor(generatedSubTasks)
+final generatedSubTasksProvider = GeneratedSubTasksFamily._();
+
+final class GeneratedSubTasksProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<String>>,
+          List<String>,
+          FutureOr<List<String>>
+        >
+    with $FutureModifier<List<String>>, $FutureProvider<List<String>> {
+  GeneratedSubTasksProvider._({
+    required GeneratedSubTasksFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'generatedSubTasksProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$generatedSubTasksHash();
+
+  @override
+  String toString() {
+    return r'generatedSubTasksProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<String>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<String>> create(Ref ref) {
+    final argument = this.argument as String;
+    return generatedSubTasks(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GeneratedSubTasksProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$generatedSubTasksHash() => r'87042bfab58f6d46339476a33df4967b3f2414e7';
+
+final class GeneratedSubTasksFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<String>>, String> {
+  GeneratedSubTasksFamily._()
+    : super(
+        retry: null,
+        name: r'generatedSubTasksProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  GeneratedSubTasksProvider call(String todoTitle) =>
+      GeneratedSubTasksProvider._(argument: todoTitle, from: this);
+
+  @override
+  String toString() => r'generatedSubTasksProvider';
+}

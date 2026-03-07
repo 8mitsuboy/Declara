@@ -55,3 +55,9 @@ Future<List<SubTask>> subTaskList(Ref ref, String todoId) async {
   final subTaskRepository = ref.watch(subTaskRepositoryProvider);
   return await subTaskRepository.findByTodoId(todoId);
 }
+
+@riverpod
+Future<List<String>> generatedSubTasks(Ref ref, String todoTitle) async {
+  final aiService = ref.watch(aiServiceProvider);
+  return await aiService.generateSubTasks(todoTitle);
+}
