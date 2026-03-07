@@ -6,7 +6,7 @@ class TodoLabel {
 
   factory TodoLabel(String label) {
     if (label.isEmpty) throw FormatException("Label must not be empty");
-    if (label.length < _maxLength) throw FormatException("Label too long");
+    if (label.length > _maxLength) throw FormatException("Label too long");
     return TodoLabel._(value: label);
   }
 }
