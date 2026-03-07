@@ -131,179 +131,182 @@ final class AiServiceProvider
 
 String _$aiServiceHash() => r'3e1c9ce75858e901728c3e3177e0c16926b82f2d';
 
-@ProviderFor(todoRepository)
-final todoRepositoryProvider = TodoRepositoryProvider._();
+@ProviderFor(declarationRepository)
+final declarationRepositoryProvider = DeclarationRepositoryProvider._();
 
-final class TodoRepositoryProvider
-    extends $FunctionalProvider<TodoRepository, TodoRepository, TodoRepository>
-    with $Provider<TodoRepository> {
-  TodoRepositoryProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'todoRepositoryProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$todoRepositoryHash();
-
-  @$internal
-  @override
-  $ProviderElement<TodoRepository> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  TodoRepository create(Ref ref) {
-    return todoRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(TodoRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<TodoRepository>(value),
-    );
-  }
-}
-
-String _$todoRepositoryHash() => r'a68b8b0d7693970e4ffe78bb444931503170e0ab';
-
-@ProviderFor(subTaskRepository)
-final subTaskRepositoryProvider = SubTaskRepositoryProvider._();
-
-final class SubTaskRepositoryProvider
+final class DeclarationRepositoryProvider
     extends
         $FunctionalProvider<
-          SubTaskRepository,
-          SubTaskRepository,
-          SubTaskRepository
+          DeclarationRepository,
+          DeclarationRepository,
+          DeclarationRepository
         >
-    with $Provider<SubTaskRepository> {
-  SubTaskRepositoryProvider._()
+    with $Provider<DeclarationRepository> {
+  DeclarationRepositoryProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'subTaskRepositoryProvider',
+        name: r'declarationRepositoryProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$subTaskRepositoryHash();
+  String debugGetCreateSourceHash() => _$declarationRepositoryHash();
 
   @$internal
   @override
-  $ProviderElement<SubTaskRepository> $createElement(
+  $ProviderElement<DeclarationRepository> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  SubTaskRepository create(Ref ref) {
-    return subTaskRepository(ref);
+  DeclarationRepository create(Ref ref) {
+    return declarationRepository(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SubTaskRepository value) {
+  Override overrideWithValue(DeclarationRepository value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<SubTaskRepository>(value),
+      providerOverride: $SyncValueProvider<DeclarationRepository>(value),
     );
   }
 }
 
-String _$subTaskRepositoryHash() => r'77b896ea0ccd7dbdb8e1c1b0e04e96d903938a82';
+String _$declarationRepositoryHash() =>
+    r'a0126be0737c301c6af9e211eb814162c971e682';
 
-@ProviderFor(todoList)
-final todoListProvider = TodoListProvider._();
+@ProviderFor(taskRepository)
+final taskRepositoryProvider = TaskRepositoryProvider._();
 
-final class TodoListProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<Todo>>,
-          List<Todo>,
-          FutureOr<List<Todo>>
-        >
-    with $FutureModifier<List<Todo>>, $FutureProvider<List<Todo>> {
-  TodoListProvider._()
+final class TaskRepositoryProvider
+    extends $FunctionalProvider<TaskRepository, TaskRepository, TaskRepository>
+    with $Provider<TaskRepository> {
+  TaskRepositoryProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'todoListProvider',
+        name: r'taskRepositoryProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$todoListHash();
+  String debugGetCreateSourceHash() => _$taskRepositoryHash();
 
   @$internal
   @override
-  $FutureProviderElement<List<Todo>> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
+  $ProviderElement<TaskRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  FutureOr<List<Todo>> create(Ref ref) {
-    return todoList(ref);
+  TaskRepository create(Ref ref) {
+    return taskRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(TaskRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<TaskRepository>(value),
+    );
   }
 }
 
-String _$todoListHash() => r'a6baffdc7b46e4663562ce0c7ea9c18417a75e7f';
+String _$taskRepositoryHash() => r'420730d3caa8cf7680c6e318312b83392599ccd0';
 
-@ProviderFor(subTaskList)
-final subTaskListProvider = SubTaskListFamily._();
+@ProviderFor(declarationList)
+final declarationListProvider = DeclarationListProvider._();
 
-final class SubTaskListProvider
+final class DeclarationListProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<SubTask>>,
-          List<SubTask>,
-          FutureOr<List<SubTask>>
+          AsyncValue<List<Declaration>>,
+          List<Declaration>,
+          FutureOr<List<Declaration>>
         >
-    with $FutureModifier<List<SubTask>>, $FutureProvider<List<SubTask>> {
-  SubTaskListProvider._({
-    required SubTaskListFamily super.from,
+    with
+        $FutureModifier<List<Declaration>>,
+        $FutureProvider<List<Declaration>> {
+  DeclarationListProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'declarationListProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$declarationListHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Declaration>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Declaration>> create(Ref ref) {
+    return declarationList(ref);
+  }
+}
+
+String _$declarationListHash() => r'85f58874084ca9cf953eeafbfa83a3b5172e4e09';
+
+@ProviderFor(taskList)
+final taskListProvider = TaskListFamily._();
+
+final class TaskListProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Task>>,
+          List<Task>,
+          FutureOr<List<Task>>
+        >
+    with $FutureModifier<List<Task>>, $FutureProvider<List<Task>> {
+  TaskListProvider._({
+    required TaskListFamily super.from,
     required String super.argument,
   }) : super(
          retry: null,
-         name: r'subTaskListProvider',
+         name: r'taskListProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$subTaskListHash();
+  String debugGetCreateSourceHash() => _$taskListHash();
 
   @override
   String toString() {
-    return r'subTaskListProvider'
+    return r'taskListProvider'
         ''
         '($argument)';
   }
 
   @$internal
   @override
-  $FutureProviderElement<List<SubTask>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
+  $FutureProviderElement<List<Task>> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<SubTask>> create(Ref ref) {
+  FutureOr<List<Task>> create(Ref ref) {
     final argument = this.argument as String;
-    return subTaskList(ref, argument);
+    return taskList(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SubTaskListProvider && other.argument == argument;
+    return other is TaskListProvider && other.argument == argument;
   }
 
   @override
@@ -312,30 +315,30 @@ final class SubTaskListProvider
   }
 }
 
-String _$subTaskListHash() => r'f24fbb01ead1b0077ff021356216e1e3e5c420d5';
+String _$taskListHash() => r'00f800e0058ad4b6ebbbc2b7e78e932db728a5ab';
 
-final class SubTaskListFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<List<SubTask>>, String> {
-  SubTaskListFamily._()
+final class TaskListFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<Task>>, String> {
+  TaskListFamily._()
     : super(
         retry: null,
-        name: r'subTaskListProvider',
+        name: r'taskListProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
       );
 
-  SubTaskListProvider call(String todoId) =>
-      SubTaskListProvider._(argument: todoId, from: this);
+  TaskListProvider call(String declarationId) =>
+      TaskListProvider._(argument: declarationId, from: this);
 
   @override
-  String toString() => r'subTaskListProvider';
+  String toString() => r'taskListProvider';
 }
 
-@ProviderFor(generatedSubTasks)
-final generatedSubTasksProvider = GeneratedSubTasksFamily._();
+@ProviderFor(generatedTasks)
+final generatedTasksProvider = GeneratedTasksFamily._();
 
-final class GeneratedSubTasksProvider
+final class GeneratedTasksProvider
     extends
         $FunctionalProvider<
           AsyncValue<List<String>>,
@@ -343,23 +346,23 @@ final class GeneratedSubTasksProvider
           FutureOr<List<String>>
         >
     with $FutureModifier<List<String>>, $FutureProvider<List<String>> {
-  GeneratedSubTasksProvider._({
-    required GeneratedSubTasksFamily super.from,
+  GeneratedTasksProvider._({
+    required GeneratedTasksFamily super.from,
     required String super.argument,
   }) : super(
          retry: null,
-         name: r'generatedSubTasksProvider',
+         name: r'generatedTasksProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$generatedSubTasksHash();
+  String debugGetCreateSourceHash() => _$generatedTasksHash();
 
   @override
   String toString() {
-    return r'generatedSubTasksProvider'
+    return r'generatedTasksProvider'
         ''
         '($argument)';
   }
@@ -373,12 +376,12 @@ final class GeneratedSubTasksProvider
   @override
   FutureOr<List<String>> create(Ref ref) {
     final argument = this.argument as String;
-    return generatedSubTasks(ref, argument);
+    return generatedTasks(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GeneratedSubTasksProvider && other.argument == argument;
+    return other is GeneratedTasksProvider && other.argument == argument;
   }
 
   @override
@@ -387,22 +390,22 @@ final class GeneratedSubTasksProvider
   }
 }
 
-String _$generatedSubTasksHash() => r'87042bfab58f6d46339476a33df4967b3f2414e7';
+String _$generatedTasksHash() => r'2f9914fc06122613250eaaa98fa9603a1e31449b';
 
-final class GeneratedSubTasksFamily extends $Family
+final class GeneratedTasksFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<List<String>>, String> {
-  GeneratedSubTasksFamily._()
+  GeneratedTasksFamily._()
     : super(
         retry: null,
-        name: r'generatedSubTasksProvider',
+        name: r'generatedTasksProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
       );
 
-  GeneratedSubTasksProvider call(String todoTitle) =>
-      GeneratedSubTasksProvider._(argument: todoTitle, from: this);
+  GeneratedTasksProvider call(String declarationTitle) =>
+      GeneratedTasksProvider._(argument: declarationTitle, from: this);
 
   @override
-  String toString() => r'generatedSubTasksProvider';
+  String toString() => r'generatedTasksProvider';
 }

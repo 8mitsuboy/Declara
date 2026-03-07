@@ -11,7 +11,7 @@ class ClaudeAiService implements AiService {
   final String apiKey;
 
   @override
-  Future<List<String>> generateSubTasks(String todoTitle) async {
+  Future<List<String>> generateTasks(String declarationTitle) async {
     final response = await dio.post(
       'https://api.anthropic.com/v1/messages',
       options: Options(
@@ -28,17 +28,16 @@ class ClaudeAiService implements AiService {
           {
             'role': 'user',
             'content':
-                'あなたはタスク分解の専門家です。以下のTodoを3〜7個の具体的なサブタスクに分解してください。'
-                'JSON配列形式で、各要素は文字列としてサブタスク名のみを返してください。'
+                'あなたはタスク分解の専門家です。以下の宣言を3〜7個の具体的なタスクに分解してください。'
+                'JSON配列形式で、各要素は文字列としてタスク名のみを返してください。'
                 '説明や番号は不要です。JSON配列のみを返してください。\n\n'
-                'Todo: $todoTitle',
+                '宣言: $declarationTitle',
           },
         ],
       },
     );
 
     final content = response.data['content'][0]['text'] as String;
-    // Extract JSON array from response
     final jsonMatch = RegExp(r'\[.*\]', dotAll: true).firstMatch(content);
     if (jsonMatch == null) {
       throw FormatException('Failed to parse AI response');

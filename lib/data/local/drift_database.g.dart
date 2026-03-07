@@ -3,11 +3,12 @@
 part of 'drift_database.dart';
 
 // ignore_for_file: type=lint
-class $TodosTable extends Todos with TableInfo<$TodosTable, TodoRecord> {
+class $DeclarationsTable extends Declarations
+    with TableInfo<$DeclarationsTable, DeclarationRecord> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TodosTable(this.attachedDatabase, [this._alias]);
+  $DeclarationsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -17,10 +18,10 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, TodoRecord> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _labelMeta = const VerificationMeta('label');
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
-  late final GeneratedColumn<String> label = GeneratedColumn<String>(
-    'label',
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
     aliasedName,
     false,
     additionalChecks: GeneratedColumn.checkTextLength(
@@ -44,15 +45,15 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, TodoRecord> {
     defaultValue: const Constant(false),
   );
   @override
-  List<GeneratedColumn> get $columns => [id, label, done];
+  List<GeneratedColumn> get $columns => [id, title, done];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'todos';
+  static const String $name = 'declarations';
   @override
   VerificationContext validateIntegrity(
-    Insertable<TodoRecord> instance, {
+    Insertable<DeclarationRecord> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -62,13 +63,13 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, TodoRecord> {
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    if (data.containsKey('label')) {
+    if (data.containsKey('title')) {
       context.handle(
-        _labelMeta,
-        label.isAcceptableOrUnknown(data['label']!, _labelMeta),
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
       );
     } else if (isInserting) {
-      context.missing(_labelMeta);
+      context.missing(_titleMeta);
     }
     if (data.containsKey('done')) {
       context.handle(
@@ -82,16 +83,16 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, TodoRecord> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  TodoRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DeclarationRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TodoRecord(
+    return DeclarationRecord(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
       )!,
-      label: attachedDatabase.typeMapping.read(
+      title: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}label'],
+        data['${effectivePrefix}title'],
       )!,
       done: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
@@ -101,41 +102,46 @@ class $TodosTable extends Todos with TableInfo<$TodosTable, TodoRecord> {
   }
 
   @override
-  $TodosTable createAlias(String alias) {
-    return $TodosTable(attachedDatabase, alias);
+  $DeclarationsTable createAlias(String alias) {
+    return $DeclarationsTable(attachedDatabase, alias);
   }
 }
 
-class TodoRecord extends DataClass implements Insertable<TodoRecord> {
+class DeclarationRecord extends DataClass
+    implements Insertable<DeclarationRecord> {
   final String id;
-  final String label;
+  final String title;
   final bool done;
-  const TodoRecord({required this.id, required this.label, required this.done});
+  const DeclarationRecord({
+    required this.id,
+    required this.title,
+    required this.done,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    map['label'] = Variable<String>(label);
+    map['title'] = Variable<String>(title);
     map['done'] = Variable<bool>(done);
     return map;
   }
 
-  TodosCompanion toCompanion(bool nullToAbsent) {
-    return TodosCompanion(
+  DeclarationsCompanion toCompanion(bool nullToAbsent) {
+    return DeclarationsCompanion(
       id: Value(id),
-      label: Value(label),
+      title: Value(title),
       done: Value(done),
     );
   }
 
-  factory TodoRecord.fromJson(
+  factory DeclarationRecord.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TodoRecord(
+    return DeclarationRecord(
       id: serializer.fromJson<String>(json['id']),
-      label: serializer.fromJson<String>(json['label']),
+      title: serializer.fromJson<String>(json['title']),
       done: serializer.fromJson<bool>(json['done']),
     );
   }
@@ -144,86 +150,87 @@ class TodoRecord extends DataClass implements Insertable<TodoRecord> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'label': serializer.toJson<String>(label),
+      'title': serializer.toJson<String>(title),
       'done': serializer.toJson<bool>(done),
     };
   }
 
-  TodoRecord copyWith({String? id, String? label, bool? done}) => TodoRecord(
-    id: id ?? this.id,
-    label: label ?? this.label,
-    done: done ?? this.done,
-  );
-  TodoRecord copyWithCompanion(TodosCompanion data) {
-    return TodoRecord(
+  DeclarationRecord copyWith({String? id, String? title, bool? done}) =>
+      DeclarationRecord(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        done: done ?? this.done,
+      );
+  DeclarationRecord copyWithCompanion(DeclarationsCompanion data) {
+    return DeclarationRecord(
       id: data.id.present ? data.id.value : this.id,
-      label: data.label.present ? data.label.value : this.label,
+      title: data.title.present ? data.title.value : this.title,
       done: data.done.present ? data.done.value : this.done,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('TodoRecord(')
+    return (StringBuffer('DeclarationRecord(')
           ..write('id: $id, ')
-          ..write('label: $label, ')
+          ..write('title: $title, ')
           ..write('done: $done')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, label, done);
+  int get hashCode => Object.hash(id, title, done);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TodoRecord &&
+      (other is DeclarationRecord &&
           other.id == this.id &&
-          other.label == this.label &&
+          other.title == this.title &&
           other.done == this.done);
 }
 
-class TodosCompanion extends UpdateCompanion<TodoRecord> {
+class DeclarationsCompanion extends UpdateCompanion<DeclarationRecord> {
   final Value<String> id;
-  final Value<String> label;
+  final Value<String> title;
   final Value<bool> done;
   final Value<int> rowid;
-  const TodosCompanion({
+  const DeclarationsCompanion({
     this.id = const Value.absent(),
-    this.label = const Value.absent(),
+    this.title = const Value.absent(),
     this.done = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  TodosCompanion.insert({
+  DeclarationsCompanion.insert({
     required String id,
-    required String label,
+    required String title,
     this.done = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
-       label = Value(label);
-  static Insertable<TodoRecord> custom({
+       title = Value(title);
+  static Insertable<DeclarationRecord> custom({
     Expression<String>? id,
-    Expression<String>? label,
+    Expression<String>? title,
     Expression<bool>? done,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (label != null) 'label': label,
+      if (title != null) 'title': title,
       if (done != null) 'done': done,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
-  TodosCompanion copyWith({
+  DeclarationsCompanion copyWith({
     Value<String>? id,
-    Value<String>? label,
+    Value<String>? title,
     Value<bool>? done,
     Value<int>? rowid,
   }) {
-    return TodosCompanion(
+    return DeclarationsCompanion(
       id: id ?? this.id,
-      label: label ?? this.label,
+      title: title ?? this.title,
       done: done ?? this.done,
       rowid: rowid ?? this.rowid,
     );
@@ -235,8 +242,8 @@ class TodosCompanion extends UpdateCompanion<TodoRecord> {
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (label.present) {
-      map['label'] = Variable<String>(label.value);
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
     }
     if (done.present) {
       map['done'] = Variable<bool>(done.value);
@@ -249,9 +256,9 @@ class TodosCompanion extends UpdateCompanion<TodoRecord> {
 
   @override
   String toString() {
-    return (StringBuffer('TodosCompanion(')
+    return (StringBuffer('DeclarationsCompanion(')
           ..write('id: $id, ')
-          ..write('label: $label, ')
+          ..write('title: $title, ')
           ..write('done: $done, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -259,12 +266,11 @@ class TodosCompanion extends UpdateCompanion<TodoRecord> {
   }
 }
 
-class $SubTasksTable extends SubTasks
-    with TableInfo<$SubTasksTable, SubTaskRecord> {
+class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRecord> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SubTasksTable(this.attachedDatabase, [this._alias]);
+  $TasksTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -274,16 +280,18 @@ class $SubTasksTable extends SubTasks
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _todoIdMeta = const VerificationMeta('todoId');
+  static const VerificationMeta _declarationIdMeta = const VerificationMeta(
+    'declarationId',
+  );
   @override
-  late final GeneratedColumn<String> todoId = GeneratedColumn<String>(
-    'todo_id',
+  late final GeneratedColumn<String> declarationId = GeneratedColumn<String>(
+    'declaration_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES todos (id)',
+      'REFERENCES declarations (id)',
     ),
   );
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
@@ -324,15 +332,21 @@ class $SubTasksTable extends SubTasks
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, todoId, title, done, sortOrder];
+  List<GeneratedColumn> get $columns => [
+    id,
+    declarationId,
+    title,
+    done,
+    sortOrder,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'sub_tasks';
+  static const String $name = 'tasks';
   @override
   VerificationContext validateIntegrity(
-    Insertable<SubTaskRecord> instance, {
+    Insertable<TaskRecord> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -342,13 +356,16 @@ class $SubTasksTable extends SubTasks
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    if (data.containsKey('todo_id')) {
+    if (data.containsKey('declaration_id')) {
       context.handle(
-        _todoIdMeta,
-        todoId.isAcceptableOrUnknown(data['todo_id']!, _todoIdMeta),
+        _declarationIdMeta,
+        declarationId.isAcceptableOrUnknown(
+          data['declaration_id']!,
+          _declarationIdMeta,
+        ),
       );
     } else if (isInserting) {
-      context.missing(_todoIdMeta);
+      context.missing(_declarationIdMeta);
     }
     if (data.containsKey('title')) {
       context.handle(
@@ -378,16 +395,16 @@ class $SubTasksTable extends SubTasks
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  SubTaskRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
+  TaskRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SubTaskRecord(
+    return TaskRecord(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
       )!,
-      todoId: attachedDatabase.typeMapping.read(
+      declarationId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}todo_id'],
+        data['${effectivePrefix}declaration_id'],
       )!,
       title: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -405,20 +422,20 @@ class $SubTasksTable extends SubTasks
   }
 
   @override
-  $SubTasksTable createAlias(String alias) {
-    return $SubTasksTable(attachedDatabase, alias);
+  $TasksTable createAlias(String alias) {
+    return $TasksTable(attachedDatabase, alias);
   }
 }
 
-class SubTaskRecord extends DataClass implements Insertable<SubTaskRecord> {
+class TaskRecord extends DataClass implements Insertable<TaskRecord> {
   final String id;
-  final String todoId;
+  final String declarationId;
   final String title;
   final bool done;
   final int sortOrder;
-  const SubTaskRecord({
+  const TaskRecord({
     required this.id,
-    required this.todoId,
+    required this.declarationId,
     required this.title,
     required this.done,
     required this.sortOrder,
@@ -427,31 +444,31 @@ class SubTaskRecord extends DataClass implements Insertable<SubTaskRecord> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    map['todo_id'] = Variable<String>(todoId);
+    map['declaration_id'] = Variable<String>(declarationId);
     map['title'] = Variable<String>(title);
     map['done'] = Variable<bool>(done);
     map['sort_order'] = Variable<int>(sortOrder);
     return map;
   }
 
-  SubTasksCompanion toCompanion(bool nullToAbsent) {
-    return SubTasksCompanion(
+  TasksCompanion toCompanion(bool nullToAbsent) {
+    return TasksCompanion(
       id: Value(id),
-      todoId: Value(todoId),
+      declarationId: Value(declarationId),
       title: Value(title),
       done: Value(done),
       sortOrder: Value(sortOrder),
     );
   }
 
-  factory SubTaskRecord.fromJson(
+  factory TaskRecord.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SubTaskRecord(
+    return TaskRecord(
       id: serializer.fromJson<String>(json['id']),
-      todoId: serializer.fromJson<String>(json['todoId']),
+      declarationId: serializer.fromJson<String>(json['declarationId']),
       title: serializer.fromJson<String>(json['title']),
       done: serializer.fromJson<bool>(json['done']),
       sortOrder: serializer.fromJson<int>(json['sortOrder']),
@@ -462,30 +479,32 @@ class SubTaskRecord extends DataClass implements Insertable<SubTaskRecord> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'todoId': serializer.toJson<String>(todoId),
+      'declarationId': serializer.toJson<String>(declarationId),
       'title': serializer.toJson<String>(title),
       'done': serializer.toJson<bool>(done),
       'sortOrder': serializer.toJson<int>(sortOrder),
     };
   }
 
-  SubTaskRecord copyWith({
+  TaskRecord copyWith({
     String? id,
-    String? todoId,
+    String? declarationId,
     String? title,
     bool? done,
     int? sortOrder,
-  }) => SubTaskRecord(
+  }) => TaskRecord(
     id: id ?? this.id,
-    todoId: todoId ?? this.todoId,
+    declarationId: declarationId ?? this.declarationId,
     title: title ?? this.title,
     done: done ?? this.done,
     sortOrder: sortOrder ?? this.sortOrder,
   );
-  SubTaskRecord copyWithCompanion(SubTasksCompanion data) {
-    return SubTaskRecord(
+  TaskRecord copyWithCompanion(TasksCompanion data) {
+    return TaskRecord(
       id: data.id.present ? data.id.value : this.id,
-      todoId: data.todoId.present ? data.todoId.value : this.todoId,
+      declarationId: data.declarationId.present
+          ? data.declarationId.value
+          : this.declarationId,
       title: data.title.present ? data.title.value : this.title,
       done: data.done.present ? data.done.value : this.done,
       sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
@@ -494,9 +513,9 @@ class SubTaskRecord extends DataClass implements Insertable<SubTaskRecord> {
 
   @override
   String toString() {
-    return (StringBuffer('SubTaskRecord(')
+    return (StringBuffer('TaskRecord(')
           ..write('id: $id, ')
-          ..write('todoId: $todoId, ')
+          ..write('declarationId: $declarationId, ')
           ..write('title: $title, ')
           ..write('done: $done, ')
           ..write('sortOrder: $sortOrder')
@@ -505,47 +524,47 @@ class SubTaskRecord extends DataClass implements Insertable<SubTaskRecord> {
   }
 
   @override
-  int get hashCode => Object.hash(id, todoId, title, done, sortOrder);
+  int get hashCode => Object.hash(id, declarationId, title, done, sortOrder);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is SubTaskRecord &&
+      (other is TaskRecord &&
           other.id == this.id &&
-          other.todoId == this.todoId &&
+          other.declarationId == this.declarationId &&
           other.title == this.title &&
           other.done == this.done &&
           other.sortOrder == this.sortOrder);
 }
 
-class SubTasksCompanion extends UpdateCompanion<SubTaskRecord> {
+class TasksCompanion extends UpdateCompanion<TaskRecord> {
   final Value<String> id;
-  final Value<String> todoId;
+  final Value<String> declarationId;
   final Value<String> title;
   final Value<bool> done;
   final Value<int> sortOrder;
   final Value<int> rowid;
-  const SubTasksCompanion({
+  const TasksCompanion({
     this.id = const Value.absent(),
-    this.todoId = const Value.absent(),
+    this.declarationId = const Value.absent(),
     this.title = const Value.absent(),
     this.done = const Value.absent(),
     this.sortOrder = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  SubTasksCompanion.insert({
+  TasksCompanion.insert({
     required String id,
-    required String todoId,
+    required String declarationId,
     required String title,
     this.done = const Value.absent(),
     required int sortOrder,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
-       todoId = Value(todoId),
+       declarationId = Value(declarationId),
        title = Value(title),
        sortOrder = Value(sortOrder);
-  static Insertable<SubTaskRecord> custom({
+  static Insertable<TaskRecord> custom({
     Expression<String>? id,
-    Expression<String>? todoId,
+    Expression<String>? declarationId,
     Expression<String>? title,
     Expression<bool>? done,
     Expression<int>? sortOrder,
@@ -553,7 +572,7 @@ class SubTasksCompanion extends UpdateCompanion<SubTaskRecord> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (todoId != null) 'todo_id': todoId,
+      if (declarationId != null) 'declaration_id': declarationId,
       if (title != null) 'title': title,
       if (done != null) 'done': done,
       if (sortOrder != null) 'sort_order': sortOrder,
@@ -561,17 +580,17 @@ class SubTasksCompanion extends UpdateCompanion<SubTaskRecord> {
     });
   }
 
-  SubTasksCompanion copyWith({
+  TasksCompanion copyWith({
     Value<String>? id,
-    Value<String>? todoId,
+    Value<String>? declarationId,
     Value<String>? title,
     Value<bool>? done,
     Value<int>? sortOrder,
     Value<int>? rowid,
   }) {
-    return SubTasksCompanion(
+    return TasksCompanion(
       id: id ?? this.id,
-      todoId: todoId ?? this.todoId,
+      declarationId: declarationId ?? this.declarationId,
       title: title ?? this.title,
       done: done ?? this.done,
       sortOrder: sortOrder ?? this.sortOrder,
@@ -585,8 +604,8 @@ class SubTasksCompanion extends UpdateCompanion<SubTaskRecord> {
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (todoId.present) {
-      map['todo_id'] = Variable<String>(todoId.value);
+    if (declarationId.present) {
+      map['declaration_id'] = Variable<String>(declarationId.value);
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
@@ -605,9 +624,9 @@ class SubTasksCompanion extends UpdateCompanion<SubTaskRecord> {
 
   @override
   String toString() {
-    return (StringBuffer('SubTasksCompanion(')
+    return (StringBuffer('TasksCompanion(')
           ..write('id: $id, ')
-          ..write('todoId: $todoId, ')
+          ..write('declarationId: $declarationId, ')
           ..write('title: $title, ')
           ..write('done: $done, ')
           ..write('sortOrder: $sortOrder, ')
@@ -620,55 +639,58 @@ class SubTasksCompanion extends UpdateCompanion<SubTaskRecord> {
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
-  late final $TodosTable todos = $TodosTable(this);
-  late final $SubTasksTable subTasks = $SubTasksTable(this);
+  late final $DeclarationsTable declarations = $DeclarationsTable(this);
+  late final $TasksTable tasks = $TasksTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [todos, subTasks];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [declarations, tasks];
 }
 
-typedef $$TodosTableCreateCompanionBuilder =
-    TodosCompanion Function({
+typedef $$DeclarationsTableCreateCompanionBuilder =
+    DeclarationsCompanion Function({
       required String id,
-      required String label,
+      required String title,
       Value<bool> done,
       Value<int> rowid,
     });
-typedef $$TodosTableUpdateCompanionBuilder =
-    TodosCompanion Function({
+typedef $$DeclarationsTableUpdateCompanionBuilder =
+    DeclarationsCompanion Function({
       Value<String> id,
-      Value<String> label,
+      Value<String> title,
       Value<bool> done,
       Value<int> rowid,
     });
 
-final class $$TodosTableReferences
-    extends BaseReferences<_$AppDatabase, $TodosTable, TodoRecord> {
-  $$TodosTableReferences(super.$_db, super.$_table, super.$_typedResult);
+final class $$DeclarationsTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $DeclarationsTable, DeclarationRecord> {
+  $$DeclarationsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$SubTasksTable, List<SubTaskRecord>>
-  _subTasksRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.subTasks,
-    aliasName: $_aliasNameGenerator(db.todos.id, db.subTasks.todoId),
+  static MultiTypedResultKey<$TasksTable, List<TaskRecord>> _tasksRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.tasks,
+    aliasName: $_aliasNameGenerator(db.declarations.id, db.tasks.declarationId),
   );
 
-  $$SubTasksTableProcessedTableManager get subTasksRefs {
-    final manager = $$SubTasksTableTableManager(
+  $$TasksTableProcessedTableManager get tasksRefs {
+    final manager = $$TasksTableTableManager(
       $_db,
-      $_db.subTasks,
-    ).filter((f) => f.todoId.id.sqlEquals($_itemColumn<String>('id')!));
+      $_db.tasks,
+    ).filter((f) => f.declarationId.id.sqlEquals($_itemColumn<String>('id')!));
 
-    final cache = $_typedResult.readTableOrNull(_subTasksRefsTable($_db));
+    final cache = $_typedResult.readTableOrNull(_tasksRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
 }
 
-class $$TodosTableFilterComposer extends Composer<_$AppDatabase, $TodosTable> {
-  $$TodosTableFilterComposer({
+class $$DeclarationsTableFilterComposer
+    extends Composer<_$AppDatabase, $DeclarationsTable> {
+  $$DeclarationsTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -680,8 +702,8 @@ class $$TodosTableFilterComposer extends Composer<_$AppDatabase, $TodosTable> {
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get label => $composableBuilder(
-    column: $table.label,
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -690,22 +712,22 @@ class $$TodosTableFilterComposer extends Composer<_$AppDatabase, $TodosTable> {
     builder: (column) => ColumnFilters(column),
   );
 
-  Expression<bool> subTasksRefs(
-    Expression<bool> Function($$SubTasksTableFilterComposer f) f,
+  Expression<bool> tasksRefs(
+    Expression<bool> Function($$TasksTableFilterComposer f) f,
   ) {
-    final $$SubTasksTableFilterComposer composer = $composerBuilder(
+    final $$TasksTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
-      referencedTable: $db.subTasks,
-      getReferencedColumn: (t) => t.todoId,
+      referencedTable: $db.tasks,
+      getReferencedColumn: (t) => t.declarationId,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$SubTasksTableFilterComposer(
+          }) => $$TasksTableFilterComposer(
             $db: $db,
-            $table: $db.subTasks,
+            $table: $db.tasks,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -716,9 +738,9 @@ class $$TodosTableFilterComposer extends Composer<_$AppDatabase, $TodosTable> {
   }
 }
 
-class $$TodosTableOrderingComposer
-    extends Composer<_$AppDatabase, $TodosTable> {
-  $$TodosTableOrderingComposer({
+class $$DeclarationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DeclarationsTable> {
+  $$DeclarationsTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -730,8 +752,8 @@ class $$TodosTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get label => $composableBuilder(
-    column: $table.label,
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -741,9 +763,9 @@ class $$TodosTableOrderingComposer
   );
 }
 
-class $$TodosTableAnnotationComposer
-    extends Composer<_$AppDatabase, $TodosTable> {
-  $$TodosTableAnnotationComposer({
+class $$DeclarationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DeclarationsTable> {
+  $$DeclarationsTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -753,28 +775,28 @@ class $$TodosTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get label =>
-      $composableBuilder(column: $table.label, builder: (column) => column);
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
 
   GeneratedColumn<bool> get done =>
       $composableBuilder(column: $table.done, builder: (column) => column);
 
-  Expression<T> subTasksRefs<T extends Object>(
-    Expression<T> Function($$SubTasksTableAnnotationComposer a) f,
+  Expression<T> tasksRefs<T extends Object>(
+    Expression<T> Function($$TasksTableAnnotationComposer a) f,
   ) {
-    final $$SubTasksTableAnnotationComposer composer = $composerBuilder(
+    final $$TasksTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
-      referencedTable: $db.subTasks,
-      getReferencedColumn: (t) => t.todoId,
+      referencedTable: $db.tasks,
+      getReferencedColumn: (t) => t.declarationId,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$SubTasksTableAnnotationComposer(
+          }) => $$TasksTableAnnotationComposer(
             $db: $db,
-            $table: $db.subTasks,
+            $table: $db.tasks,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -785,82 +807,90 @@ class $$TodosTableAnnotationComposer
   }
 }
 
-class $$TodosTableTableManager
+class $$DeclarationsTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $TodosTable,
-          TodoRecord,
-          $$TodosTableFilterComposer,
-          $$TodosTableOrderingComposer,
-          $$TodosTableAnnotationComposer,
-          $$TodosTableCreateCompanionBuilder,
-          $$TodosTableUpdateCompanionBuilder,
-          (TodoRecord, $$TodosTableReferences),
-          TodoRecord,
-          PrefetchHooks Function({bool subTasksRefs})
+          $DeclarationsTable,
+          DeclarationRecord,
+          $$DeclarationsTableFilterComposer,
+          $$DeclarationsTableOrderingComposer,
+          $$DeclarationsTableAnnotationComposer,
+          $$DeclarationsTableCreateCompanionBuilder,
+          $$DeclarationsTableUpdateCompanionBuilder,
+          (DeclarationRecord, $$DeclarationsTableReferences),
+          DeclarationRecord,
+          PrefetchHooks Function({bool tasksRefs})
         > {
-  $$TodosTableTableManager(_$AppDatabase db, $TodosTable table)
+  $$DeclarationsTableTableManager(_$AppDatabase db, $DeclarationsTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$TodosTableFilterComposer($db: db, $table: table),
+              $$DeclarationsTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$TodosTableOrderingComposer($db: db, $table: table),
+              $$DeclarationsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$TodosTableAnnotationComposer($db: db, $table: table),
+              $$DeclarationsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
-                Value<String> label = const Value.absent(),
+                Value<String> title = const Value.absent(),
                 Value<bool> done = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => TodosCompanion(
+              }) => DeclarationsCompanion(
                 id: id,
-                label: label,
+                title: title,
                 done: done,
                 rowid: rowid,
               ),
           createCompanionCallback:
               ({
                 required String id,
-                required String label,
+                required String title,
                 Value<bool> done = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => TodosCompanion.insert(
+              }) => DeclarationsCompanion.insert(
                 id: id,
-                label: label,
+                title: title,
                 done: done,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) =>
-                    (e.readTable(table), $$TodosTableReferences(db, table, e)),
+                (e) => (
+                  e.readTable(table),
+                  $$DeclarationsTableReferences(db, table, e),
+                ),
               )
               .toList(),
-          prefetchHooksCallback: ({subTasksRefs = false}) {
+          prefetchHooksCallback: ({tasksRefs = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [if (subTasksRefs) db.subTasks],
+              explicitlyWatchedTables: [if (tasksRefs) db.tasks],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
                 return [
-                  if (subTasksRefs)
+                  if (tasksRefs)
                     await $_getPrefetchedData<
-                      TodoRecord,
-                      $TodosTable,
-                      SubTaskRecord
+                      DeclarationRecord,
+                      $DeclarationsTable,
+                      TaskRecord
                     >(
                       currentTable: table,
-                      referencedTable: $$TodosTableReferences
-                          ._subTasksRefsTable(db),
+                      referencedTable: $$DeclarationsTableReferences
+                          ._tasksRefsTable(db),
                       managerFromTypedResult: (p0) =>
-                          $$TodosTableReferences(db, table, p0).subTasksRefs,
+                          $$DeclarationsTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).tasksRefs,
                       referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.todoId == item.id),
+                          referencedItems.where(
+                            (e) => e.declarationId == item.id,
+                          ),
                       typedResults: items,
                     ),
                 ];
@@ -871,55 +901,56 @@ class $$TodosTableTableManager
       );
 }
 
-typedef $$TodosTableProcessedTableManager =
+typedef $$DeclarationsTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $TodosTable,
-      TodoRecord,
-      $$TodosTableFilterComposer,
-      $$TodosTableOrderingComposer,
-      $$TodosTableAnnotationComposer,
-      $$TodosTableCreateCompanionBuilder,
-      $$TodosTableUpdateCompanionBuilder,
-      (TodoRecord, $$TodosTableReferences),
-      TodoRecord,
-      PrefetchHooks Function({bool subTasksRefs})
+      $DeclarationsTable,
+      DeclarationRecord,
+      $$DeclarationsTableFilterComposer,
+      $$DeclarationsTableOrderingComposer,
+      $$DeclarationsTableAnnotationComposer,
+      $$DeclarationsTableCreateCompanionBuilder,
+      $$DeclarationsTableUpdateCompanionBuilder,
+      (DeclarationRecord, $$DeclarationsTableReferences),
+      DeclarationRecord,
+      PrefetchHooks Function({bool tasksRefs})
     >;
-typedef $$SubTasksTableCreateCompanionBuilder =
-    SubTasksCompanion Function({
+typedef $$TasksTableCreateCompanionBuilder =
+    TasksCompanion Function({
       required String id,
-      required String todoId,
+      required String declarationId,
       required String title,
       Value<bool> done,
       required int sortOrder,
       Value<int> rowid,
     });
-typedef $$SubTasksTableUpdateCompanionBuilder =
-    SubTasksCompanion Function({
+typedef $$TasksTableUpdateCompanionBuilder =
+    TasksCompanion Function({
       Value<String> id,
-      Value<String> todoId,
+      Value<String> declarationId,
       Value<String> title,
       Value<bool> done,
       Value<int> sortOrder,
       Value<int> rowid,
     });
 
-final class $$SubTasksTableReferences
-    extends BaseReferences<_$AppDatabase, $SubTasksTable, SubTaskRecord> {
-  $$SubTasksTableReferences(super.$_db, super.$_table, super.$_typedResult);
+final class $$TasksTableReferences
+    extends BaseReferences<_$AppDatabase, $TasksTable, TaskRecord> {
+  $$TasksTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static $TodosTable _todoIdTable(_$AppDatabase db) => db.todos.createAlias(
-    $_aliasNameGenerator(db.subTasks.todoId, db.todos.id),
-  );
+  static $DeclarationsTable _declarationIdTable(_$AppDatabase db) =>
+      db.declarations.createAlias(
+        $_aliasNameGenerator(db.tasks.declarationId, db.declarations.id),
+      );
 
-  $$TodosTableProcessedTableManager get todoId {
-    final $_column = $_itemColumn<String>('todo_id')!;
+  $$DeclarationsTableProcessedTableManager get declarationId {
+    final $_column = $_itemColumn<String>('declaration_id')!;
 
-    final manager = $$TodosTableTableManager(
+    final manager = $$DeclarationsTableTableManager(
       $_db,
-      $_db.todos,
+      $_db.declarations,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_todoIdTable($_db));
+    final item = $_typedResult.readTableOrNull(_declarationIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -927,9 +958,8 @@ final class $$SubTasksTableReferences
   }
 }
 
-class $$SubTasksTableFilterComposer
-    extends Composer<_$AppDatabase, $SubTasksTable> {
-  $$SubTasksTableFilterComposer({
+class $$TasksTableFilterComposer extends Composer<_$AppDatabase, $TasksTable> {
+  $$TasksTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -956,20 +986,20 @@ class $$SubTasksTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  $$TodosTableFilterComposer get todoId {
-    final $$TodosTableFilterComposer composer = $composerBuilder(
+  $$DeclarationsTableFilterComposer get declarationId {
+    final $$DeclarationsTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.todoId,
-      referencedTable: $db.todos,
+      getCurrentColumn: (t) => t.declarationId,
+      referencedTable: $db.declarations,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$TodosTableFilterComposer(
+          }) => $$DeclarationsTableFilterComposer(
             $db: $db,
-            $table: $db.todos,
+            $table: $db.declarations,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -980,9 +1010,9 @@ class $$SubTasksTableFilterComposer
   }
 }
 
-class $$SubTasksTableOrderingComposer
-    extends Composer<_$AppDatabase, $SubTasksTable> {
-  $$SubTasksTableOrderingComposer({
+class $$TasksTableOrderingComposer
+    extends Composer<_$AppDatabase, $TasksTable> {
+  $$TasksTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1009,20 +1039,20 @@ class $$SubTasksTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  $$TodosTableOrderingComposer get todoId {
-    final $$TodosTableOrderingComposer composer = $composerBuilder(
+  $$DeclarationsTableOrderingComposer get declarationId {
+    final $$DeclarationsTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.todoId,
-      referencedTable: $db.todos,
+      getCurrentColumn: (t) => t.declarationId,
+      referencedTable: $db.declarations,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$TodosTableOrderingComposer(
+          }) => $$DeclarationsTableOrderingComposer(
             $db: $db,
-            $table: $db.todos,
+            $table: $db.declarations,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -1033,9 +1063,9 @@ class $$SubTasksTableOrderingComposer
   }
 }
 
-class $$SubTasksTableAnnotationComposer
-    extends Composer<_$AppDatabase, $SubTasksTable> {
-  $$SubTasksTableAnnotationComposer({
+class $$TasksTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TasksTable> {
+  $$TasksTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1054,20 +1084,20 @@ class $$SubTasksTableAnnotationComposer
   GeneratedColumn<int> get sortOrder =>
       $composableBuilder(column: $table.sortOrder, builder: (column) => column);
 
-  $$TodosTableAnnotationComposer get todoId {
-    final $$TodosTableAnnotationComposer composer = $composerBuilder(
+  $$DeclarationsTableAnnotationComposer get declarationId {
+    final $$DeclarationsTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.todoId,
-      referencedTable: $db.todos,
+      getCurrentColumn: (t) => t.declarationId,
+      referencedTable: $db.declarations,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$TodosTableAnnotationComposer(
+          }) => $$DeclarationsTableAnnotationComposer(
             $db: $db,
-            $table: $db.todos,
+            $table: $db.declarations,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -1078,43 +1108,43 @@ class $$SubTasksTableAnnotationComposer
   }
 }
 
-class $$SubTasksTableTableManager
+class $$TasksTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $SubTasksTable,
-          SubTaskRecord,
-          $$SubTasksTableFilterComposer,
-          $$SubTasksTableOrderingComposer,
-          $$SubTasksTableAnnotationComposer,
-          $$SubTasksTableCreateCompanionBuilder,
-          $$SubTasksTableUpdateCompanionBuilder,
-          (SubTaskRecord, $$SubTasksTableReferences),
-          SubTaskRecord,
-          PrefetchHooks Function({bool todoId})
+          $TasksTable,
+          TaskRecord,
+          $$TasksTableFilterComposer,
+          $$TasksTableOrderingComposer,
+          $$TasksTableAnnotationComposer,
+          $$TasksTableCreateCompanionBuilder,
+          $$TasksTableUpdateCompanionBuilder,
+          (TaskRecord, $$TasksTableReferences),
+          TaskRecord,
+          PrefetchHooks Function({bool declarationId})
         > {
-  $$SubTasksTableTableManager(_$AppDatabase db, $SubTasksTable table)
+  $$TasksTableTableManager(_$AppDatabase db, $TasksTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$SubTasksTableFilterComposer($db: db, $table: table),
+              $$TasksTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$SubTasksTableOrderingComposer($db: db, $table: table),
+              $$TasksTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$SubTasksTableAnnotationComposer($db: db, $table: table),
+              $$TasksTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
-                Value<String> todoId = const Value.absent(),
+                Value<String> declarationId = const Value.absent(),
                 Value<String> title = const Value.absent(),
                 Value<bool> done = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => SubTasksCompanion(
+              }) => TasksCompanion(
                 id: id,
-                todoId: todoId,
+                declarationId: declarationId,
                 title: title,
                 done: done,
                 sortOrder: sortOrder,
@@ -1123,14 +1153,14 @@ class $$SubTasksTableTableManager
           createCompanionCallback:
               ({
                 required String id,
-                required String todoId,
+                required String declarationId,
                 required String title,
                 Value<bool> done = const Value.absent(),
                 required int sortOrder,
                 Value<int> rowid = const Value.absent(),
-              }) => SubTasksCompanion.insert(
+              }) => TasksCompanion.insert(
                 id: id,
-                todoId: todoId,
+                declarationId: declarationId,
                 title: title,
                 done: done,
                 sortOrder: sortOrder,
@@ -1138,13 +1168,11 @@ class $$SubTasksTableTableManager
               ),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) => (
-                  e.readTable(table),
-                  $$SubTasksTableReferences(db, table, e),
-                ),
+                (e) =>
+                    (e.readTable(table), $$TasksTableReferences(db, table, e)),
               )
               .toList(),
-          prefetchHooksCallback: ({todoId = false}) {
+          prefetchHooksCallback: ({declarationId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -1164,15 +1192,15 @@ class $$SubTasksTableTableManager
                       dynamic
                     >
                   >(state) {
-                    if (todoId) {
+                    if (declarationId) {
                       state =
                           state.withJoin(
                                 currentTable: table,
-                                currentColumn: table.todoId,
-                                referencedTable: $$SubTasksTableReferences
-                                    ._todoIdTable(db),
-                                referencedColumn: $$SubTasksTableReferences
-                                    ._todoIdTable(db)
+                                currentColumn: table.declarationId,
+                                referencedTable: $$TasksTableReferences
+                                    ._declarationIdTable(db),
+                                referencedColumn: $$TasksTableReferences
+                                    ._declarationIdTable(db)
                                     .id,
                               )
                               as T;
@@ -1189,26 +1217,26 @@ class $$SubTasksTableTableManager
       );
 }
 
-typedef $$SubTasksTableProcessedTableManager =
+typedef $$TasksTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $SubTasksTable,
-      SubTaskRecord,
-      $$SubTasksTableFilterComposer,
-      $$SubTasksTableOrderingComposer,
-      $$SubTasksTableAnnotationComposer,
-      $$SubTasksTableCreateCompanionBuilder,
-      $$SubTasksTableUpdateCompanionBuilder,
-      (SubTaskRecord, $$SubTasksTableReferences),
-      SubTaskRecord,
-      PrefetchHooks Function({bool todoId})
+      $TasksTable,
+      TaskRecord,
+      $$TasksTableFilterComposer,
+      $$TasksTableOrderingComposer,
+      $$TasksTableAnnotationComposer,
+      $$TasksTableCreateCompanionBuilder,
+      $$TasksTableUpdateCompanionBuilder,
+      (TaskRecord, $$TasksTableReferences),
+      TaskRecord,
+      PrefetchHooks Function({bool declarationId})
     >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
-  $$TodosTableTableManager get todos =>
-      $$TodosTableTableManager(_db, _db.todos);
-  $$SubTasksTableTableManager get subTasks =>
-      $$SubTasksTableTableManager(_db, _db.subTasks);
+  $$DeclarationsTableTableManager get declarations =>
+      $$DeclarationsTableTableManager(_db, _db.declarations);
+  $$TasksTableTableManager get tasks =>
+      $$TasksTableTableManager(_db, _db.tasks);
 }

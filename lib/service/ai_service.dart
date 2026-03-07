@@ -1,3 +1,3 @@
 abstract class AiService {
-  Future<List<String>> generateSubTasks(String todoTitle);
+  Future<List<String>> generateTasks(String declarationTitle);
 }

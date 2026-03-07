@@ -3,11 +3,11 @@ import 'package:drift_flutter/drift_flutter.dart';
 
 part 'drift_database.g.dart';
 
-@DataClassName('TodoRecord')
-class Todos extends Table {
+@DataClassName('DeclarationRecord')
+class Declarations extends Table {
   TextColumn get id => text()();
 
-  TextColumn get label => text().withLength(min: 1, max: 30)();
+  TextColumn get title => text().withLength(min: 1, max: 30)();
 
   BoolColumn get done => boolean().withDefault(const Constant(false))();
 
@@ -15,11 +15,11 @@ class Todos extends Table {
   Set<Column<Object>> get primaryKey => {id};
 }
 
-@DataClassName('SubTaskRecord')
-class SubTasks extends Table {
+@DataClassName('TaskRecord')
+class Tasks extends Table {
   TextColumn get id => text()();
 
-  TextColumn get todoId => text().references(Todos, #id)();
+  TextColumn get declarationId => text().references(Declarations, #id)();
 
   TextColumn get title => text().withLength(min: 1, max: 100)();
 
@@ -31,14 +31,14 @@ class SubTasks extends Table {
   Set<Column<Object>> get primaryKey => {id};
 }
 
-@DriftDatabase(tables: [Todos, SubTasks])
+@DriftDatabase(tables: [Declarations, Tasks])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration {
@@ -47,14 +47,16 @@ class AppDatabase extends _$AppDatabase {
         await m.createAll();
       },
       onUpgrade: (Migrator m, int from, int to) async {
-        if (from < 2) {
-          await m.createTable(subTasks);
+        if (from < 3) {
+          await m.deleteTable('sub_tasks');
+          await m.deleteTable('todos');
+          await m.createAll();
         }
       },
     );
   }
 
   static QueryExecutor _openConnection() {
-    return driftDatabase(name: 'declara.sqlite');
+    return driftDatabase(name: 'declara');
   }
 }
