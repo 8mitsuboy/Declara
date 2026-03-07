@@ -90,3 +90,41 @@ final class TodoRepositoryProvider
 }
 
 String _$todoRepositoryHash() => r'a68b8b0d7693970e4ffe78bb444931503170e0ab';
+
+@ProviderFor(todoList)
+final todoListProvider = TodoListProvider._();
+
+final class TodoListProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Todo>>,
+          List<Todo>,
+          FutureOr<List<Todo>>
+        >
+    with $FutureModifier<List<Todo>>, $FutureProvider<List<Todo>> {
+  TodoListProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'todoListProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$todoListHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Todo>> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Todo>> create(Ref ref) {
+    return todoList(ref);
+  }
+}
+
+String _$todoListHash() => r'a6baffdc7b46e4663562ce0c7ea9c18417a75e7f';
