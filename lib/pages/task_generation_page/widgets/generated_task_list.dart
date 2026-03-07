@@ -1,4 +1,4 @@
-import 'package:declara/domain/sub_task.dart';
+import 'package:declara/domain/task.dart';
 import 'package:declara/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -6,13 +6,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class GeneratedTaskList extends ConsumerWidget {
   const GeneratedTaskList({
     super.key,
-    required this.todoId,
-    required this.todoTitle,
+    required this.declarationId,
+    required this.declarationTitle,
     required this.tasks,
   });
 
-  final String todoId;
-  final String todoTitle;
+  final String declarationId;
+  final String declarationTitle;
   final List<String> tasks;
 
   @override
@@ -21,7 +21,7 @@ class GeneratedTaskList extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          '「$todoTitle」のサブタスク',
+          '「$declarationTitle」のタスク',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 16),
@@ -41,19 +41,19 @@ class GeneratedTaskList extends ConsumerWidget {
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () async {
-            final subTaskRepository = ref.read(subTaskRepositoryProvider);
-            final subTasks = tasks
+            final taskRepository = ref.read(taskRepositoryProvider);
+            final taskList = tasks
                 .asMap()
                 .entries
                 .map(
-                  (e) => SubTask(
-                    todoId: todoId,
+                  (e) => Task(
+                    declarationId: declarationId,
                     title: e.value,
                     sortOrder: e.key,
                   ),
                 )
                 .toList();
-            await subTaskRepository.saveAll(subTasks);
+            await taskRepository.saveAll(taskList);
             if (context.mounted) {
               Navigator.of(context).pop();
             }
