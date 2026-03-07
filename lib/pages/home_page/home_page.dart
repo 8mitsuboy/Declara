@@ -1,20 +1,22 @@
-import 'package:declara/pages/create_todo/create_todo_page.dart';
+import 'package:declara/pages/create_todo_page/create_todo_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:declara/pages/todo_page.dart';
+import 'package:declara/pages/todo_page/todo_page.dart';
 
 class HomePage extends HookConsumerWidget {
-  final String title;
   const HomePage({super.key, required this.title});
+
+  final String title;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pages = [const CreateTodoPage(), const TodoPage()];
     final currentPageIndex = useState<int>(0);
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
-      body: [const CreateTodoPage(), const TodoPage()][currentPageIndex.value],
+      body: pages[currentPageIndex.value],
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentPageIndex.value,
         onDestinationSelected: (int index) {
