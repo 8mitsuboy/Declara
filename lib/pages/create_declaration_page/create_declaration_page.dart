@@ -27,9 +27,9 @@ class CreateDeclarationPage extends HookConsumerWidget {
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
               TaskGenerationPage(
-            declarationId: declaration.id,
-            declarationTitle: userInput,
-          ),
+                declarationId: declaration.id,
+                declarationTitle: userInput,
+              ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurvedAnimation(
@@ -37,13 +37,13 @@ class CreateDeclarationPage extends HookConsumerWidget {
                 curve: Curves.easeOut,
               ),
               child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0, 0.05),
-                  end: Offset.zero,
-                ).animate(CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOut,
-                )),
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(0, 0.05),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
                 child: child,
               ),
             );
@@ -68,7 +68,7 @@ class CreateDeclarationPage extends HookConsumerWidget {
           children: [
             const Spacer(flex: 2),
             Text(
-              'あなたの「やりたい」を\n宣言しよう',
+              'やりたい、やらなきゃを\nポンッと宣言しよう',
               textAlign: TextAlign.center,
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
