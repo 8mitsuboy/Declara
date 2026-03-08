@@ -12,8 +12,10 @@ class DeclarationPage extends ConsumerWidget {
 
     if (declarationListAsync.value case final declarations?
         when declarations.isNotEmpty) {
-      return ListView.builder(
+      return ListView.separated(
+        padding: const EdgeInsets.all(16),
         itemCount: declarations.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final declaration = declarations[index];
           return DeclarationTile(
