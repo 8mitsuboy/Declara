@@ -11,8 +11,14 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pages = [const CreateDeclarationPage(), const DeclarationPage()];
     final currentPageIndex = useState<int>(0);
+
+    final pages = [
+      CreateDeclarationPage(
+        onDeclared: () => currentPageIndex.value = 1,
+      ),
+      const DeclarationPage(),
+    ];
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
