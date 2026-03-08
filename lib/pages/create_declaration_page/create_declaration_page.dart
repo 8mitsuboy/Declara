@@ -24,11 +24,31 @@ class CreateDeclarationPage extends HookConsumerWidget {
     controller.clear();
     if (context.mounted) {
       await Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => TaskGenerationPage(
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              TaskGenerationPage(
             declarationId: declaration.id,
             declarationTitle: userInput,
           ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeOut,
+              ),
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0, 0.05),
+                  end: Offset.zero,
+                ).animate(CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeOut,
+                )),
+                child: child,
+              ),
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 400),
         ),
       );
       onDeclared?.call();
