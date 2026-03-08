@@ -18,10 +18,10 @@ class DeclaraTextField extends HookConsumerWidget {
 
   static const _defaultHints = [
     '引っ越したい',
-    '資格を取りたい',
-    '部屋を片付けたい',
-    '英語を話せるようになりたい',
-    '健康的な生活を送りたい',
+    '結婚式に参加したい',
+    '晩御飯を作りたい',
+    '水道代を払いたい',
+    '年賀状を作りたい',
   ];
 
   @override
@@ -54,14 +54,14 @@ class DeclaraTextField extends HookConsumerWidget {
           style: Theme.of(context).textTheme.bodyLarge,
           decoration: InputDecoration(
             labelText: 'やりたいこと',
-            hintText: '例: ${hints[hintIndex.value]}',
             suffixIcon: IconButton(
               onPressed: controller.clear,
               icon: const Icon(Icons.close),
             ),
             filled: true,
-            fillColor:
-                colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+            fillColor: colorScheme.surfaceContainerHighest.withValues(
+              alpha: 0.4,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: BorderSide.none,
@@ -81,8 +81,8 @@ class DeclaraTextField extends HookConsumerWidget {
             child: Text(
               '例: ${hints[hintIndex.value]}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-                  ),
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+              ),
             ),
           ),
         ),
