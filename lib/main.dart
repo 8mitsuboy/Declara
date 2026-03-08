@@ -1,4 +1,4 @@
-import 'package:declara/pages/home_page/home_page.dart';
+import 'package:declara/pages/splash_page/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomePage(title: 'Declara'),
+      home: const SplashPage(),
     );
   }
 }
