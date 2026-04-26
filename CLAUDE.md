@@ -37,3 +37,14 @@
 - 状態は明示的かつテスト可能に保つ。
 - 非同期・エラー・ローディング状態を一貫した方針で扱う。
 - 可能な限り機能追加と同時にテストを追加する（まず Unit Test、必要に応じて Widget Test）。
+
+## Shared Context
+- このファイルには、リポジトリ全体で常に有効な前提のみを置く。
+- 詳細なプロジェクト背景は `docs/context/project-overview.md` を参照する。
+- アーキテクチャの補足は `docs/context/architecture.md` を参照する。
+- 今進めている施策の文脈は、対応する `docs/context/current-initiative-*.md` を参照する。
+- 重要な設計判断は `docs/decisions/ADR-*.md` を参照する。
+
+## Working Agreement
+- 会話だけに依存する前提は避け、継続的に必要な文脈は `docs/` 配下に反映する。
+- チケットをまたぐ重要判断が発生したら、実装前後のどちらでもよいので ADR として残す。

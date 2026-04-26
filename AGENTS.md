@@ -46,3 +46,13 @@
 ## 出力スタイル
 - 説明は簡潔かつ実行可能な内容にする。
 - 必要に応じて、その設計判断が DDD / Flutter 学習にどう寄与するかを添える。
+
+## Context Docs
+- 作業開始時は、必要に応じて `docs/context/project-overview.md` と `docs/context/architecture.md` を参照する。
+- 進行中の施策に着手する際は、該当する `docs/context/current-initiative-*.md` を参照する。
+- チケットを横断する重要な設計判断は `docs/decisions/` 配下の ADR を参照する。
+
+## Context 運用ルール
+- `AGENTS.md` には、このリポジトリで常に有効な共通前提だけを書く。
+- チケット単位・施策単位の前提は `docs/context/current-initiative-*.md` に書く。
+- 長期的に参照される設計判断は `docs/decisions/ADR-*.md` に記録する。
