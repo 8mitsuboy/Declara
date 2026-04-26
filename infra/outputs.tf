@@ -11,5 +11,9 @@ output "cognito_user_pool_client_id" {
 output "cognito_issuer_url" {
   description = "Issuer URL for Cognito JWT tokens."
   value       = "https://cognito-idp.${var.aws_region}.amazonaws.com/${aws_cognito_user_pool.end_users.id}"
+}
 
+output "task_generation_lambda_function_name" {
+  description = "Name of the Lambda function for task generation."
+  value       = aws_lambda_function.task_generation.function_name
 }

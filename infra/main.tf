@@ -25,3 +25,41 @@ resource "aws_cognito_user_pool_client" "flutter_app" {
     "ALLOW_REFRESH_TOKEN_AUTH",
   ]
 }
+
+data "aws_iam_policy_document" "lambda_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "task_generation_lambda" {
+  name               = "declara-task-generation-lambda-role"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "task_generation_lambda_basic_execution" {
+  role       = aws_iam_role.task_generation_lambda.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+data "archive_file" "task_generation_lambda" {
+  type        = "zip"
+  source_file = "${path.module}/lambda_placeholder/index.js"
+  output_path = "${path.module}/lambda_placeholder.zip"
+}
+
+resource "aws_lambda_function" "task_generation" {
+  function_name = "declara-task-generation"
+  role          = aws_iam_role.task_generation_lambda.arn
+
+  runtime = "nodejs20.x"
+  handler = "index.handler"
+
+  filename         = data.archive_file.task_generation_lambda.output_path
+  source_code_hash = data.archive_file.task_generation_lambda.output_base64sha256
+}
