@@ -17,3 +17,8 @@ output "task_generation_lambda_function_name" {
   description = "Name of the Lambda function for task generation."
   value       = aws_lambda_function.task_generation.function_name
 }
+
+output "task_generation_api_endpoint" {
+  description = "Base endpoint URL of the task generation API."
+  value       = module.task_generation_api.api_endpoint
+}

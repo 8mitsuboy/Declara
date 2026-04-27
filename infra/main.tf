@@ -47,6 +47,7 @@ resource "aws_iam_role_policy_attachment" "task_generation_lambda_basic_executio
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+// terraform apply時に自動でLambdaで実行するjsファイルをZip化する
 data "archive_file" "task_generation_lambda" {
   type        = "zip"
   source_file = "${path.module}/lambda_placeholder/index.js"
@@ -62,4 +63,15 @@ resource "aws_lambda_function" "task_generation" {
 
   filename         = data.archive_file.task_generation_lambda.output_path
   source_code_hash = data.archive_file.task_generation_lambda.output_base64sha256
+}
+
+module "task_generation_api" {
+  source = "./modules/http_api"
+
+  api_name                 = "declara-task-generation-api"
+  route_key                = "POST /generate-tasks"
+  lambda_function_name     = aws_lambda_function.task_generation.function_name
+  lambda_invoke_arn        = aws_lambda_function.task_generation.invoke_arn
+  cognito_user_pool_issuer = "https://cognito-idp.${var.aws_region}.amazonaws.com/${aws_cognito_user_pool.end_users.id}"
+  cognito_client_id        = aws_cognito_user_pool_client.flutter_app.id
 }
