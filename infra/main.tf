@@ -47,11 +47,10 @@ resource "aws_iam_role_policy_attachment" "task_generation_lambda_basic_executio
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-// terraform apply時に自動でLambdaで実行するjsファイルをZip化する
 data "archive_file" "task_generation_lambda" {
   type        = "zip"
-  source_file = "${path.module}/lambda_placeholder/index.js"
-  output_path = "${path.module}/lambda_placeholder.zip"
+  source_file = "${path.module}/../backend/lambda/task_generation/dist/index.js"
+  output_path = "${path.module}/task_generation_lambda.zip"
 }
 
 resource "aws_lambda_function" "task_generation" {
