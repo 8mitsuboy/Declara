@@ -1,21 +1,28 @@
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import { generateTaskTitlesFromAnthropic } from "./anthropicClient.ts";
 import { createTaskGenerationHandler } from "./handler.ts";
 
-type LambdaEnvironment = {
-  CLAUDE_API_KEY?: string;
-};
+const ssmClient = new SSMClient({});
+let apiKeyPromise: Promise<string> | undefined;
+
+function getDefaultApiKey(): Promise<string> {
+  if (!apiKeyPromise) {
+    apiKeyPromise = fetchApiKeyFromSsm(getRequiredEnv("CLAUDE_API_KEY_SSM_PATH"));
+  }
+  return apiKeyPromise;
+}
 
 export function createLambdaHandler(dependencies?: {
   generateTasks?: (declarationTitle: string) => Promise<string[]>;
+  getApiKey?: () => Promise<string>;
 }) {
+  const getApiKey = dependencies?.getApiKey ?? getDefaultApiKey;
+
   const generateTasks =
     dependencies?.generateTasks ??
     (async (declarationTitle: string) => {
-      const apiKey = getRequiredEnv("CLAUDE_API_KEY");
-      return generateTaskTitlesFromAnthropic({
-        apiKey,
-        declarationTitle,
-      });
+      const apiKey = await getApiKey();
+      return generateTaskTitlesFromAnthropic({ apiKey, declarationTitle });
     });
 
   return createTaskGenerationHandler({ generateTasks });
@@ -23,11 +30,21 @@ export function createLambdaHandler(dependencies?: {
 
 export const handler = createLambdaHandler();
 
-function getRequiredEnv(name: keyof LambdaEnvironment): string {
+async function fetchApiKeyFromSsm(path: string): Promise<string> {
+  const command = new GetParameterCommand({
+    Name: path,
+    WithDecryption: true,
+  });
+  const response = await ssmClient.send(command);
+  const value = response.Parameter?.Value;
+  if (!value) throw new Error(`SSM parameter ${path} has no value.`);
+  return value;
+}
+
+function getRequiredEnv(name: string): string {
   const value = process.env[name];
   if (typeof value !== "string" || value.trim() === "") {
     throw new Error(`${name} is required.`);
   }
-
   return value;
 }
