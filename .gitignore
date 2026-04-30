@@ -33,6 +33,11 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# Node.js
+**/node_modules/
+.pnpm-store/
+backend/lambda/task_generation/dist/
+
 # Symbolication related
 app.*.symbols
 
@@ -44,5 +49,15 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Node.js
+node_modules/
+dist/
+
+# pnpm
+.pnpm-store/
+
 # Environment variables
 .env
+
+# Terraform
+**/.terraform/
