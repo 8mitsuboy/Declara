@@ -35,6 +35,7 @@ migrate_working_dir/
 
 # Node.js
 **/node_modules/
+.pnpm-store/
 
 # Symbolication related
 app.*.symbols

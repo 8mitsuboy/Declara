@@ -1,0 +1,15 @@
+{
+  "name": "declara-task-generation-lambda",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "biome check .",
+    "format": "biome format --write .",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}
