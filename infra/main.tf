@@ -47,6 +47,29 @@ resource "aws_iam_role_policy_attachment" "task_generation_lambda_basic_executio
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+resource "aws_ssm_parameter" "claude_api_key" {
+  name  = "/declara/claude_api_key"
+  type  = "SecureString"
+  value = "REPLACE_ME"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+data "aws_iam_policy_document" "task_generation_lambda_ssm" {
+  statement {
+    actions   = ["ssm:GetParameter"]
+    resources = [aws_ssm_parameter.claude_api_key.arn]
+  }
+}
+
+resource "aws_iam_role_policy" "task_generation_lambda_ssm" {
+  name   = "declara-task-generation-lambda-ssm"
+  role   = aws_iam_role.task_generation_lambda.id
+  policy = data.aws_iam_policy_document.task_generation_lambda_ssm.json
+}
+
 data "archive_file" "task_generation_lambda" {
   type        = "zip"
   source_file = "${path.module}/../backend/lambda/task_generation/dist/index.js"
@@ -62,6 +85,12 @@ resource "aws_lambda_function" "task_generation" {
 
   filename         = data.archive_file.task_generation_lambda.output_path
   source_code_hash = data.archive_file.task_generation_lambda.output_base64sha256
+
+  environment {
+    variables = {
+      CLAUDE_API_KEY_SSM_PATH = aws_ssm_parameter.claude_api_key.name
+    }
+  }
 }
 
 module "task_generation_api" {
